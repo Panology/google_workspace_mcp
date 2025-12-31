@@ -725,7 +725,7 @@ cp .env.oauth21 .env
 | `search_gmail_messages` | **Core** | Search with Gmail operators |
 | `get_gmail_message_content` | **Core** | Retrieve message content |
 | `get_gmail_messages_content_batch` | **Core** | Batch retrieve message content |
-| `send_gmail_message` | **Core** | Send emails |
+| `send_gmail_message` | **Core** | Send emails (supports custom sender) |
 | `get_gmail_thread_content` | Extended | Get full thread content |
 | `modify_gmail_message_labels` | Extended | Modify message labels |
 | `list_gmail_labels` | Extended | List available labels |

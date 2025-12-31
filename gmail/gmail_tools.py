@@ -912,6 +912,10 @@ async def send_gmail_message(
     references: Optional[str] = Body(
         None, description="Optional chain of Message-IDs for proper threading."
     ),
+    from_email: Optional[str] = Body(
+        None,
+        description="Sender email address. If not specified, defaults to the authenticated user's email.",
+    ),
 ) -> str:
     """
     Sends an email using the user's Gmail account. Supports both new emails and replies.
@@ -924,6 +928,7 @@ async def send_gmail_message(
         cc (Optional[str]): Optional CC email address.
         bcc (Optional[str]): Optional BCC email address.
         user_google_email (str): The user's Google email address. Required.
+        from_email (Optional[str]): Sender email address. If not specified, defaults to the authenticated user's email.
         thread_id (Optional[str]): Optional Gmail thread ID to reply within. When provided, sends a reply.
         in_reply_to (Optional[str]): Optional Message-ID of the message being replied to. Used for proper threading.
         references (Optional[str]): Optional chain of Message-IDs for proper threading. Should include all previous Message-IDs.
@@ -934,6 +939,14 @@ async def send_gmail_message(
     Examples:
         # Send a new email
         send_gmail_message(to="user@example.com", subject="Hello", body="Hi there!")
+
+        # Send from a different address (alias or delegated account)
+        send_gmail_message(
+            to="user@example.com",
+            subject="Hello",
+            body="Hi there!",
+            from_email="alias@example.com"
+        )
 
         # Send an HTML email
         send_gmail_message(
@@ -977,7 +990,7 @@ async def send_gmail_message(
         in_reply_to=in_reply_to,
         references=references,
         body_format=body_format,
-        from_email=user_google_email,
+        from_email=from_email if from_email else user_google_email,
     )
 
     send_body = {"raw": raw_message}

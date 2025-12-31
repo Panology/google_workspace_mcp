@@ -54,7 +54,7 @@ export OAUTHLIB_INSECURE_TRANSPORT=1  # Development only
 | `search_gmail_messages` | Core | Search with Gmail operators, returns message/thread IDs with web links |
 | `get_gmail_message_content` | Core | Get full message: subject, sender, body, attachments |
 | `get_gmail_messages_content_batch` | Core | Batch retrieve up to 25 messages |
-| `send_gmail_message` | Core | Send emails with HTML support, CC/BCC, threading |
+| `send_gmail_message` | Core | Send emails with HTML support, CC/BCC, threading, custom sender |
 | `get_gmail_thread_content` | Extended | Get complete conversation thread |
 | `draft_gmail_message` | Extended | Create drafts with threading support |
 | `list_gmail_labels` | Extended | List all system and user labels |
