@@ -30,8 +30,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-configure_file_logging()
-
 
 def safe_print(text):
     # Don't print to stderr when running as MCP server via uvx to avoid JSON parsing errors
@@ -118,7 +116,16 @@ def main():
         default="stdio",
         help="Transport mode: stdio (default) or streamable-http",
     )
+    parser.add_argument(
+        "--log-dir",
+        type=str,
+        default=None,
+        help="Directory for log files (defaults to project root)",
+    )
     args = parser.parse_args()
+
+    # Configure file logging with optional custom directory
+    configure_file_logging(log_dir=args.log_dir)
 
     # Set port and base URI once for reuse throughout the function
     port = int(os.getenv("PORT", os.getenv("WORKSPACE_MCP_PORT", 8000)))

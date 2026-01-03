@@ -155,7 +155,7 @@ def setup_enhanced_logging(
         root_logger.addHandler(console_handler)
 
 
-def configure_file_logging(logger_name: str = None) -> bool:
+def configure_file_logging(logger_name: str = None, log_dir: str = None) -> bool:
     """
     Configure file logging based on stateless mode setting.
 
@@ -164,6 +164,7 @@ def configure_file_logging(logger_name: str = None) -> bool:
 
     Args:
         logger_name: Optional name for the logger (defaults to root logger)
+        log_dir: Optional directory for log files (defaults to project root)
 
     Returns:
         bool: True if file logging was configured, False if skipped (stateless mode)
@@ -181,9 +182,12 @@ def configure_file_logging(logger_name: str = None) -> bool:
     # Configure file logging for normal mode
     try:
         target_logger = logging.getLogger(logger_name)
-        log_file_dir = os.path.dirname(os.path.abspath(__file__))
-        # Go up one level since we're in core/ subdirectory
-        log_file_dir = os.path.dirname(log_file_dir)
+        if log_dir:
+            log_file_dir = log_dir
+        else:
+            log_file_dir = os.path.dirname(os.path.abspath(__file__))
+            # Go up one level since we're in core/ subdirectory
+            log_file_dir = os.path.dirname(log_file_dir)
         log_file_path = os.path.join(log_file_dir, "mcp_server_debug.log")
 
         file_handler = logging.FileHandler(log_file_path, mode="a")
