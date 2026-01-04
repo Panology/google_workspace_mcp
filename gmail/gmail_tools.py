@@ -1031,6 +1031,10 @@ async def draft_gmail_message(
     references: Optional[str] = Body(
         None, description="Optional chain of Message-IDs for proper threading."
     ),
+    from_email: Optional[str] = Body(
+        None,
+        description="Sender email address. If not specified, defaults to the authenticated user's email.",
+    ),
 ) -> str:
     """
     Creates a draft email in the user's Gmail account. Supports both new drafts and reply drafts.
@@ -1109,7 +1113,7 @@ async def draft_gmail_message(
         thread_id=thread_id,
         in_reply_to=in_reply_to,
         references=references,
-        from_email=user_google_email,
+        from_email=from_email if from_email else user_google_email,
     )
 
     # Create a draft instead of sending
