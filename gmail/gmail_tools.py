@@ -515,6 +515,9 @@ async def get_gmail_message_content(
     # Extract attachment metadata
     attachments = _extract_attachments(payload)
 
+    # Extract label IDs
+    label_ids = message_full.get("labelIds", [])
+
     content_lines = [
         f"Subject: {subject}",
         f"From:    {sender}",
@@ -527,6 +530,8 @@ async def get_gmail_message_content(
         content_lines.append(f"To:      {to}")
     if cc:
         content_lines.append(f"Cc:      {cc}")
+    if label_ids:
+        content_lines.append(f"Labels:  {', '.join(label_ids)}")
 
     content_lines.append(f"\n--- BODY ---\n{body_data or '[No text/plain body found]'}")
 
@@ -1172,6 +1177,7 @@ def _format_thread_content(thread_data: dict, thread_id: str) -> str:
         sender = headers.get("From", "(unknown sender)")
         date = headers.get("Date", "(unknown date)")
         subject = headers.get("Subject", "(no subject)")
+        label_ids = message.get("labelIds", [])
 
         # Extract both text and HTML bodies
         payload = message.get("payload", {})
@@ -1190,6 +1196,8 @@ def _format_thread_content(thread_data: dict, thread_id: str) -> str:
                 f"Date: {date}",
             ]
         )
+        if label_ids:
+            content_lines.append(f"Labels: {', '.join(label_ids)}")
 
         # Only show subject if it's different from thread subject
         if subject != thread_subject:
